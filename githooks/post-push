@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Define the repository path environment variable
+REPOS_PATH=$(git rev-parse --show-toplevel)
+
+# Pull the latest Docker image
+docker pull ghcr.io/oriolrius/readme2notion
+
+# Run the Docker container with the specified command
+docker run --rm --network host -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion /repos/README.md
