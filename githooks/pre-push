@@ -48,7 +48,7 @@ if [ ${REPO_NAME} = "readme2notion" ]; then
     -H "Authorization: Bearer ${GHCR_PAT}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     -d "$json_payload" \
-    -o /dev/null \
+    -o /tmp/curl.log \
     https://api.github.com/gists/${GIST_ID}
 
   echo "Gist updated successfully"

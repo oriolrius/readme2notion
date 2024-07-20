@@ -47,18 +47,18 @@ async function readme2Notion(inputFile, options) {
       await deletePageContent(notion, page_id);
     }
 
-    if (blocks.length > 20) {
-      let chunks = [];
-      for (let i = 0; i < chunks.length; i += 20) {
-        chunks.push(blocks.slice(i, i + 20));
-      }
+    // if (blocks.length > 20) {
+    //   let chunks = [];
+    //   for (let i = 0; i < chunks.length; i += 20) {
+    //     chunks.push(blocks.slice(i, i + 20));
+    //   }
 
-      for (let chunk of chunks) {
-        await addChildrenBlocks(notion, page_id, chunk);
-      };
-    } else {
+    //   for (let chunk of chunks) {
+    //     await addChildrenBlocks(notion, page_id, chunk);
+    //   };
+    // } else {
       await addChildrenBlocks(notion, page_id, blocks);
-    }
+    // }
     config.page_id = page_id;
 
 
