@@ -1,10 +1,13 @@
 #FROM node:current-slim
-FROM node:22-alpine
+FROM node:current-alpine
 
 WORKDIR /app
 
-COPY ./ /app
+COPY *js /app
+COPY *json /app
 
 RUN npm install
 
-ENTRYPOINT ["node", "./readme2notion.js"]
+WORKDIR /repos
+
+ENTRYPOINT ["node", "/app/readme2notion.js"]
