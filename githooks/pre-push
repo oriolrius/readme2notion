@@ -109,7 +109,7 @@ echo "---" | tee -a $LOG_FILE
 # Run the Docker container with the specified command
 echo "$(date): Running Docker container" | tee -a $LOG_FILE
 docker run --rm --network host -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion \
-  --notion-token ${NOTION_API_TOKEN} \
+  --notionToken ${NOTION_API_TOKEN} \
   --commit ${LATEST_COMMIT} \
   /repos/README.md 2>&1 | tee -a $LOG_FILE
 
