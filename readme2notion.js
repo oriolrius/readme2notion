@@ -61,9 +61,10 @@ program
         await addChildrenBlocks(notion, page_id, blocks);
         // save page_id in the rc file
         config.page_id = page_id;
-        // remove property config and configs
+        // remove unneded config fields
         delete config.config;
         delete config.configs;
+        delete config._;
         writeFile(`.${options.rc}rc`, JSON.stringify(config, null, 2), (err) => {
           if (err) {
             console.error(`Error saving configuration: ${err}`);

@@ -2,4 +2,4 @@ name: readme2notion
 services:
   readme2Notion:
     build: .
-    image: readme2notion
+    image: ghcr.io/oriolrius/readme2notion

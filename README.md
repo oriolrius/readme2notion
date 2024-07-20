@@ -13,8 +13,8 @@
 
 ```bash
 REPOS_PATH=/path/to/repos
-docker pull readme2notion
-docker run --rm -v ${REPOS_PATH}:/repos readme2notion /repos/README.md
+docker pull ghcr.io/oriolrius/readme2notion
+docker run --rm -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion /repos/README.md
 ```
 
 ### Options
@@ -31,7 +31,7 @@ So, it has to be a .notionrc file in the REPOS_PATH directory. Or wathever file 
 
 ```sh
 REPOS_PATH=/path/to/repos
-docker run --rm --network host -v ${REPOS_PATH}:/repos readme2notion -r notion /repos/README.md
+docker run --rm --network host -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion -r notion /repos/README.md
 ```
 
 This command reads `README.md` and uploads its content to a Notion page as specified in the configuration.
