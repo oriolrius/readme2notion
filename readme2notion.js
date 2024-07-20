@@ -62,7 +62,7 @@ program
               title: [
                 {
                   text: {
-                    content: options.name
+                    content: config.name
                   }
                 }
               ]
