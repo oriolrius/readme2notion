@@ -224,7 +224,7 @@ export const findPageId = async (notion, databaseId, title) => {
 
   if (response.results.length === 0) {
     console.log(`Page with name ${title} not found in database with ID ${databaseId}`);
-    return "Not found";
+    return "NOT_FOUND";
   }
 
   console.log(`Successfully found page ID in the database with ID: ${databaseId}`);

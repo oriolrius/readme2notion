@@ -38,7 +38,7 @@ async function readme2Notion(inputFile, options) {
 
     let page_id = await findPageId(notion, config.db_id, page_name);
 
-    if (page_id === "Not found") {
+    if (page_id === "NOT_FOUND") {
       page_id = await createPage(notion, config.db_id, page_name, hostname, options.commit);
     } else {
       await updatePageProperties(notion, page_id, {
