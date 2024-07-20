@@ -58,6 +58,15 @@ program
           page_id = await createPage(notion, config.db_id, page_name, hostname, options.commit);
         } else {
           await updatePageProperties(notion, page_id, {
+            Name: {
+              title: [
+                {
+                  text: {
+                    content: options.name
+                  }
+                }
+              ]
+            },
             Hostname: {
               rich_text: [
                 {
