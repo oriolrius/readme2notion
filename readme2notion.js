@@ -40,7 +40,7 @@ program
     console.log(config);
 
     const page_name = `${hostname}/${config.name}`;
-    const notion = createNotionClient(config.notion_token);
+    const notion = createNotionClient(config['notion-token']);
 
     try {
       // Read the input file and convert it to Notion blocks
