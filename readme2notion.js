@@ -5,7 +5,7 @@ import { readFile, symlinkSync, writeFile } from 'node:fs';
 import { markdownToBlocks } from '@tryfabric/martian';
 import { Client } from '@notionhq/client';
 import { program } from 'commander';
-import rc from 'rc';
+// import rc from 'rc';
 import { create } from 'node:domain';
 import { createPage, findPageId, getReadmeBlocks, deletePageContent, addChildrenBlocks, createNotionClient, updatePageProperties } from './notionUtils.js';
 import os from 'os'; 
@@ -19,7 +19,7 @@ program
   .name('readme2notion')
   .usage('[options] <input-file>')
   .arguments('<input-file>')
-  .option('-r, --rc <app_name>', 'Application name for configuration', 'notion')
+  .option('-c, --config <file_path_to_config_file>', 'JSON Config file path', '.notionrc')
   .option('-t, --commit <commit_hash>', 'The latest GIT commit hash', 'null')
   .option('-n, --notion-token <token>', 'Notion API token')
 
@@ -28,14 +28,11 @@ program
     console.log(`Input file: ${inputFile}`);
     console.log(`Configuration file: ${options.rc}`);
 
-    // Load configuration for 'notion' from the rc file
-    // the module rc automatically looks for a configuration file named .notionrc
-    const config = rc(options.rc, {
-      // Default values (if not found in config file)
-      "db_id": "",
-      "page_id": "",
-      "name": "",
-    });
+    const config = await import(`.${options.rc}rc`) && {
+      name: "",
+      db_id: "",
+      page_id: "",
+    };
 
     console.log(config);
 
