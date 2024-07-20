@@ -20,6 +20,7 @@ program
   .usage('[options] <input-file>')
   .arguments('<input-file>')
   .option('-r, --rc <app_name>', 'Application name for configuration', 'notion')
+  .option('-t, --commit <commit_hash>', 'The latest GIT commit hash', 'null')
   .action(async (inputFile, options) => { // make this function async
     // Your main script logic here
     console.log(`Input file: ${inputFile}`);
@@ -54,7 +55,7 @@ program
         // find the page ID based on the database ID and page name
         let page_id = await findPageId(notion, config.db_id, page_name);
         if (!page_id) {
-          page_id = await createPage(notion, config.db_id, page_name);
+          page_id = await createPage(notion, config.db_id, page_name, hostname, options.commit);
         } else {
           await deletePageContent(notion, page_id);
         }

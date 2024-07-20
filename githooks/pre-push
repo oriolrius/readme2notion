@@ -17,6 +17,12 @@ echo "Git hook logs are available at: $LOG_FILE"
 # Log start of the hook execution
 echo "$(date): Starting hook execution" >> $LOG_FILE
 
+# Get the latest commit hash to be pushed
+LATEST_COMMIT=$(git rev-parse HEAD)
+
+# Log the latest commit hash
+echo "$(date): Latest commit hash to be pushed is $LATEST_COMMIT" >> $LOG_FILE
+
 # capture parameters and environment variables to the log file
 echo "---" >> $LOG_FILE
 echo "Parameters: $@" >> $LOG_FILE
@@ -46,7 +52,7 @@ echo "---" >> $LOG_FILE
 
 # Run the Docker container with the specified command
 echo "$(date): Running Docker container" >> $LOG_FILE
-docker run --rm --network host -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion /repos/README.md >> $LOG_FILE 2>&1
+docker run --rm --network host -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion --commit ${LATEST_COMMIT} /repos/README.md >> $LOG_FILE 2>&1
 
 # Check if the Docker run was successful
 if [ $? -ne 0 ]; then

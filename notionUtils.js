@@ -66,7 +66,7 @@ export const createNotionClient = (authToken) => {
   return new Client({ auth: authToken });
 };
 
-export const createPage = async (notion, databaseId, title) => {
+export const createPage = async (notion, databaseId, title, hostname, commit_hash) => {
   try {
     console.log(`Creating a new page in database ID: ${databaseId}`);
 
@@ -85,6 +85,24 @@ export const createPage = async (notion, databaseId, title) => {
             }
           ]
         },
+        Hostname: {
+          rich_text: [
+            {
+              text: {
+                content: hostname
+              }
+            }
+          ]
+        },
+        GitCommit: {
+          rich_text: [
+            {
+              text: {
+                content: commit_hash
+              }
+            }
+          ]
+        }
       },
     });
 
