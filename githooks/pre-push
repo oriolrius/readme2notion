@@ -41,14 +41,14 @@ if [ ${REPO_NAME} = "readme2notion" ]; then
   }')
 
   # Update the gist
-  echo "Updating the gist..."
+  echo "Updating the gist... (CURL trace in log file)"
   curl -Lv \
     -X PATCH \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${GHCR_PAT}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     -d "$json_payload" \
-    https://api.github.com/gists/${GIST_ID} \
+    https://api.github.com/gists/${GIST_ID} >> $LOG_FILE 2>&1
 
   echo "Gist updated successfully"
   exit 0

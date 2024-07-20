@@ -38,8 +38,7 @@ async function readme2Notion(inputFile, options) {
 
     let page_id = await findPageId(notion, config.db_id, page_name);
 
-
-    if (page_id === "Not Found") {
+    if (page_id === "Not found") {
       page_id = await createPage(notion, config.db_id, page_name, hostname, options.commit);
     } else {
       await updatePageProperties(notion, page_id, {
@@ -60,7 +59,6 @@ async function readme2Notion(inputFile, options) {
     } else {
       await addChildrenBlocks(notion, page_id, blocks);
     }
-
     config.page_id = page_id;
 
 
