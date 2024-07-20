@@ -1,10 +1,43 @@
 #!/bin/bash
 
-# Define the repository path environment variable
+# Get the hostname
+HOSTNAME=$(hostname)
+
+# Get the path of the current repository
 REPOS_PATH=$(git rev-parse --show-toplevel)
 
+# Extract the repository name from the repository path
+REPO_NAME=$(basename $REPOS_PATH)
+
+# Construct the log file path
+LOG_FILE="/tmp/${HOSTNAME}_${REPO_NAME}.log"
+
+# Log start of the hook execution
+echo "$(date): Starting hook execution" >> $LOG_FILE
+
+# Get the path of the current repository
+REPOS_PATH=$(git rev-parse --show-toplevel)
+echo "$(date): Repository path is $REPOS_PATH" >> $LOG_FILE
+
 # Pull the latest Docker image
-docker pull ghcr.io/oriolrius/readme2notion
+echo "$(date): Pulling Docker image" >> $LOG_FILE
+docker pull ghcr.io/oriolrius/readme2notion >> $LOG_FILE 2>&1
+
+# Check if the Docker pull was successful
+if [ $? -ne 0 ]; then
+  echo "$(date): Docker pull failed" >> $LOG_FILE
+  exit 1
+fi
 
 # Run the Docker container with the specified command
-docker run --rm --network host -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion /repos/README.md
+echo "$(date): Running Docker container" >> $LOG_FILE
+docker run --rm --network host -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion /repos/README.md >> $LOG_FILE 2>&1
+
+# Check if the Docker run was successful
+if [ $? -ne 0 ]; then
+  echo "$(date): Docker run failed" >> $LOG_FILE
+  exit 1
+fi
+
+# Log end of the hook execution
+echo "$(date): Hook execution finished" >> $LOG_FILE
