@@ -26,9 +26,9 @@ program
   .action(async (inputFile, options) => { // make this function async
     // Your main script logic here
     console.log(`Input file: ${inputFile}`);
-    console.log(`Configuration file: ${options.rc}`);
+    console.log(`Configuration file: ${options.config}`);
 
-    const config = await import(`.${options.rc}rc`) && {
+    const config = await import(options.config) && {
       name: "",
       db_id: "",
       page_id: "",
@@ -95,7 +95,7 @@ program
         delete config.configs;
         delete config._;
         delete config.commit;
-        writeFile(`.${options.rc}rc`, JSON.stringify(config, null, 2), (err) => {
+        writeFile(options.config, JSON.stringify(config, null, 2), (err) => {
           if (err) {
             console.error(`Error saving configuration: ${err}`);
           } else {
