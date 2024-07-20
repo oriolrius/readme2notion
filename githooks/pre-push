@@ -23,9 +23,8 @@ echo "Repository name is $REPO_NAME"
 if [ ${REPO_NAME} = "readme2notion" ]; then
   echo "Updating GIST..."
   # https://gist.githubusercontent.com/oriolrius/963795c149e11c084db763a578abc258/raw/iot-gw_stacks_pre-push
-  GIST_ID="963795c149e11c084db763a578abc258"
-
   # Read the content of the file
+  GIST_ID="963795c149e11c084db763a578abc258"
   FILE_CONTENT=$(cat "$0")
   GIST_DESCRIPTION="readm2notion pre-push hook"
   FILE_NAME="iot-gw_stacks_pre-push"
@@ -43,7 +42,7 @@ if [ ${REPO_NAME} = "readme2notion" ]; then
 
   # Update the gist
   echo "Updating the gist..."
-  curl -L \
+  curl -Lv \
     -X PATCH \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${GHCR_PAT}" \
