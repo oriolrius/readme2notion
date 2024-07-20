@@ -43,11 +43,13 @@ if [ ${REPO_NAME} = "readme2notion" ]; then
 
   # Update the gist
   echo "Updating the gist..."
-  curl -s -X PATCH \
-    -H "Authorization: token $GHCR_PAT" \
-    -H "Content-Type: application/json" \
+  curl -L \
+    -X PATCH \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: Bearer ${GHCR_PAT}" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
     -d "$json_payload" \
-    "https://api.github.com/gists/$GIST_ID"
+    https://api.github.com/gists/${GIST_ID} \
 
   echo "Gist updated successfully"
   exit 0
