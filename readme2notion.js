@@ -97,6 +97,7 @@ program
         delete config.config;
         delete config.configs;
         delete config._;
+        delete config.commit;
         writeFile(`.${options.rc}rc`, JSON.stringify(config, null, 2), (err) => {
           if (err) {
             console.error(`Error saving configuration: ${err}`);
