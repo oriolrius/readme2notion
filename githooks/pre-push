@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Get the path of the current repository
 REPOS_PATH=$(git rev-parse --show-toplevel)
 if [ $? -ne 0 ]; then
