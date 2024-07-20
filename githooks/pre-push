@@ -1,10 +1,9 @@
-#!/bin/bash
-
-# Get the hostname
-HOSTNAME=$(hostname)
-
 # Get the path of the current repository
 REPOS_PATH=$(git rev-parse --show-toplevel)
+if [ $? -ne 0 ]; then
+  echo "Error: Not a Git repository"
+  exit 1
+fi
 
 # Extract the repository name from the repository path
 REPO_NAME=$(basename $REPOS_PATH)
@@ -24,20 +23,34 @@ LATEST_COMMIT=$(git rev-parse HEAD)
 echo "$(date): Latest commit hash to be pushed is $LATEST_COMMIT" | tee -a $LOG_FILE
 
 # Capture parameters and environment variables to the log file
-echo "---" >> $LOG_FILE
-echo "Parameters: $@" >> $LOG_FILE
-echo "---" >> $LOG_FILE
-echo "Environment:" >> $LOG_FILE
-env >> $LOG_FILE
-echo "---" >> $LOG_FILE
-echo "Set:" >> $LOG_FILE
-set >> $LOG_FILE
-echo "---" >> $LOG_FILE
+# echo "---" >> $LOG_FILE
+# echo "Parameters: $@" >> $LOG_FILE
+# echo "---" >> $LOG_FILE
+# echo "Environment:" >> $LOG_FILE
+# env >> $LOG_FILE
+# echo "---" >> $LOG_FILE
+# echo "Set:" >> $LOG_FILE
+# set >> $LOG_FILE
+# echo "---" >> $LOG_FILE
 
 # Get the path of the current repository
 REPOS_PATH=$(git rev-parse --show-toplevel)
 echo "$(date): Repository path is $REPOS_PATH" | tee -a $LOG_FILE
 echo "---" | tee -a $LOG_FILE
+
+# Getting the CHCR_PAT (Github Container Registry Personal Access Token) from the UCI
+echo "$(date): Getting the GHCR_PAT from the UCI" | tee -a $LOG_FILE
+if [ -z "$GHCR_PAT" ]; then
+  GHCR_PAT=$(uci get credentials.ghcr.ghcr_pat 2>/dev/null)
+  if [ -z "$GHCR_PAT" ]; then
+    echo "$(date): GHCR_PAT is not set" | tee -a $LOG_FILE
+    exit 1
+  fi
+fi
+
+# Github Container Registry login
+echo "$(date): Logging into GitHub Container Registry" | tee -a $LOG_FILE
+echo $GHCR_PAT | docker login ghcr.io -u oriolrius --password-stdin 2>&1 | tee -a $LOG_FILE
 
 # Pull the latest Docker image
 echo "$(date): Pulling Docker image" | tee -a $LOG_FILE
@@ -50,9 +63,22 @@ if [ $? -ne 0 ]; then
 fi
 echo "---" | tee -a $LOG_FILE
 
+# Getting the Notion token from the UCI
+echo "$(date): Getting the Notion token from the UCI" | tee -a $LOG_FILE
+if [ -z "$NOTION_API_TOKEN" ]; then
+  NOTION_API_TOKEN=$(uci get credentials.notion.api_key 2>/dev/null)
+  if [ -z "$NOTION_API_TOKEN" ]; then
+    echo "$(date): Notion API token is not set" | tee -a $LOG_FILE
+    exit 1
+  fi
+fi
+
 # Run the Docker container with the specified command
 echo "$(date): Running Docker container" | tee -a $LOG_FILE
-docker run --rm --network host -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion --commit ${LATEST_COMMIT} /repos/README.md 2>&1 | tee -a $LOG_FILE
+docker run --rm --network host -v ${REPOS_PATH}:/repos ghcr.io/oriolrius/readme2notion \
+  --token ${NOTION_API_TOKEN} \
+  --commit ${LATEST_COMMIT} \
+  /repos/README.md 2>&1 | tee -a $LOG_FILE
 
 # Check if the Docker run was successful
 if [ $? -ne 0 ]; then
