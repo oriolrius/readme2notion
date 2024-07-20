@@ -12,6 +12,11 @@ REPO_NAME=$(basename $REPOS_PATH)
 # Construct the log file path
 LOG_FILE="/tmp/${HOSTNAME}_${REPO_NAME}.log"
 
+# capture parameters and environment variables to the log file
+echo "Parameters: $@" >> $LOG_FILE
+echo "Environment:" >> $LOG_FILE
+env >> $LOG_FILE
+
 # Log start of the hook execution
 echo "$(date): Starting hook execution" >> $LOG_FILE
 
