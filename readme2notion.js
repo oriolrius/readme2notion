@@ -8,23 +8,17 @@ import os from 'os';
 const hostname = os.hostname();
 console.log(`Hostname: ${hostname}`);
 
-/**
- * Converts a readme file to Notion blocks and updates a Notion page with the converted content.
- * @param {string} inputFile - The path to the input readme file.
- * @param {object} options - The options for the conversion process.
- * @param {string} options.config - The path to the configuration file.
- * @param {string} options.commit - The git commit hash associated with the conversion.
- * @returns {Promise<void>} - A promise that resolves when the conversion is complete.
- */
+
 async function readme2Notion(inputFile, options) {
   console.log(`Input file: ${inputFile}`);
   console.log(`Configuration file: ${options.config}`);
 
+  const notion = createNotionClient(options.notionToken);
+  const blockLimit = Number.parseInt(options.notionLimit);
+
   const { default: config } = await import(options.config, { with: { type: 'json' } });
   console.log(config);
   const page_name = `${hostname}/${config.name}`;
-  const notion = createNotionClient(config.notionToken);
-  const blockLimit = Number.parseInt(config.notionLimit);
 
   try {
     // Read the input file and convert it to Notion blocks
