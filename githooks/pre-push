@@ -40,11 +40,6 @@ echo "$(date): Latest commit hash to be pushed is $LATEST_COMMIT" | tee -a $LOG_
 # set >> $LOG_FILE
 # echo "---" >> $LOG_FILE
 
-# Get the path of the current repository
-REPOS_PATH=$(git rev-parse --show-toplevel)
-echo "$(date): Repository path is $REPOS_PATH" | tee -a $LOG_FILE
-echo "---" | tee -a $LOG_FILE
-
 # Getting the CHCR_PAT (Github Container Registry Personal Access Token) from the UCI
 echo "$(date): Getting the GHCR_PAT from the UCI" | tee -a $LOG_FILE
 if [ -z "$GHCR_PAT" ]; then
