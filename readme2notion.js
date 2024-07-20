@@ -79,7 +79,7 @@ program
   .option('-c, --config <file_path_to_config_file>', 'JSON Config file path', '/repos/.notion.json')
   .option('-t, --commit <commit_hash>', 'The latest GIT commit hash', 'null')
   .option('-n, --notionToken <token>', 'Notion API token')
-  .option('-l, --notionLimit <number>', 'Notion API limited to maximum number of blocks.', "100")
+  .option('-l, --notionLimit <number>', 'Notion API limited to maximum number of blocks.', "1000")
   .action(readme2Notion);
 
 // Parse the command-line arguments
