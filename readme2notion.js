@@ -23,7 +23,8 @@ async function readme2Notion(inputFile, options) {
   const { default: config } = await import(options.config, { with: { type: 'json' } });
   console.log(config);
   const page_name = `${hostname}/${config.name}`;
-  const notion = createNotionClient(config['notion-token']);
+  const notion = createNotionClient(config.notionToken);
+  const blockLimit = Number.parseInt(config.notionLimit);
 
   try {
     // Read the input file and convert it to Notion blocks
@@ -47,10 +48,10 @@ async function readme2Notion(inputFile, options) {
       await deletePageContent(notion, page_id);
     }
 
-    if (blocks.length > 20) {
+    if (blocks.length > blockLimit) {
       let chunks = [];
-      for (let i = 0; i < blocks.length; i += 20) {
-        chunks.push(blocks.slice(i, i + 20));
+      for (let i = 0; i < blocks.length; i += blockLimit) {
+        chunks.push(blocks.slice(i, i + blockLimit));
       }
 
       for (let chunk of chunks) {
@@ -82,7 +83,8 @@ program
   .arguments('<input-file>')
   .option('-c, --config <file_path_to_config_file>', 'JSON Config file path', '/repos/.notion.json')
   .option('-t, --commit <commit_hash>', 'The latest GIT commit hash', 'null')
-  .option('-n, --notion-token <token>', 'Notion API token')
+  .option('-n, --notionToken <token>', 'Notion API token')
+  .option('-l, --notionLimit <number>', 'Notion API limited to maximum number of blocks.', "100")
   .action(readme2Notion);
 
 // Parse the command-line arguments
