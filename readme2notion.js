@@ -19,7 +19,7 @@ program
   .name('readme2notion')
   .usage('[options] <input-file>')
   .arguments('<input-file>')
-  .option('-c, --config <file_path_to_config_file>', 'JSON Config file path', 'file://repos/.notionrc')
+  .option('-c, --config <file_path_to_config_file>', 'JSON Config file path', '/repos/.notionrc')
   .option('-t, --commit <commit_hash>', 'The latest GIT commit hash', 'null')
   .option('-n, --notion-token <token>', 'Notion API token')
 
@@ -29,11 +29,21 @@ program
     console.log(`Configuration file: ${options.config}`);
 
     // Load the configuration file
-    const config = await import(options.config, { assert: { type: 'json' }}) && {
-      name: "",
-      db_id: "",
-      page_id: "",
-    };
+    let { default: config } = await import(options.config, { with: { type: 'json' }});
+    // import config from options.config assert { type: 'json' };
+    // try {
+    //   config = await import(options.config, { assert: { type: 'json' }}) && {
+    //     name: "",
+    //     db_id: "",
+    //     page_id: "",
+    //   };
+    // } catch (error) {
+    //   if ( error.code === 'ERR_MODULE_NOT_FOUND' ) {
+    //     console.error(`Configuration file not found: ${options.config}`);
+    //     exit(1);
+    //   } 
+    //   throw error;
+    // }
 
     console.log(config);
 
