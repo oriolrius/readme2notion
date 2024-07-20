@@ -13,7 +13,11 @@ import { Client } from '@notionhq/client';
 export const getReadmeBlocks = async (inputFile) => {
   try {
     const data = await fs.readFile(inputFile, 'utf8');
-    return markdownToBlocks(data);
+    return markdownToBlocks(data, {
+      notionLimits: {
+        truncate: false
+      }
+    });
   } catch (err) {
     throw new Error(`Error reading file: ${err.message}`);
   }
