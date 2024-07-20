@@ -10,21 +10,6 @@ import { create } from 'node:domain';
 import { createPage, findPageId, getReadmeBlocks, deletePageContent, addChildrenBlocks, createNotionClient, updatePageProperties } from './notionUtils.js';
 import os from 'os'; 
 import { exit } from 'node:process';
-const { exec } = require('child_process');
-
-// Function to get a UCI value with a single path parameter
-function getUciValue(path) {
-  return new Promise((resolve, reject) => {
-    const command = `uci get ${path}`;
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        reject(`Error: ${stderr}`);
-      } else {
-        resolve(stdout.trim());
-      }
-    });
-  });
-}
 
 const hostname = os.hostname();
 console.log(`Hostname: ${hostname}`);
@@ -37,7 +22,7 @@ program
   .option('-r, --rc <app_name>', 'Application name for configuration', 'notion')
   .option('-t, --commit <commit_hash>', 'The latest GIT commit hash', 'null')
   .option('-n, --notion-token <token>', 'Notion API token')
-  
+
   .action(async (inputFile, options) => { // make this function async
     // Your main script logic here
     console.log(`Input file: ${inputFile}`);
