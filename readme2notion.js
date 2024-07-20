@@ -19,7 +19,7 @@ program
   .name('readme2notion')
   .usage('[options] <input-file>')
   .arguments('<input-file>')
-  .option('-c, --config <file_path_to_config_file>', 'JSON Config file path', '.notionrc')
+  .option('-c, --config <file_path_to_config_file>', 'JSON Config file path', './.notionrc')
   .option('-t, --commit <commit_hash>', 'The latest GIT commit hash', 'null')
   .option('-n, --notion-token <token>', 'Notion API token')
 
@@ -28,7 +28,8 @@ program
     console.log(`Input file: ${inputFile}`);
     console.log(`Configuration file: ${options.config}`);
 
-    const config = await import(options.config) && {
+    // Load the configuration file
+    const config = await import(options.config, { assert: { type: 'json' }}) && {
       name: "",
       db_id: "",
       page_id: "",
