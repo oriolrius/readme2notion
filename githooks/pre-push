@@ -10,7 +10,7 @@ fi
 # Extract the repository name from the repository path
 REPO_NAME=$(basename $REPOS_PATH)
 echo "Repository name is $REPO_NAME"
-if [ ${REPO_NAME} -eq "readme2notion"]; then
+if [ ${REPO_NAME} -eq "readme2notion" ]; then
   echo "Not needed to run the hook. Exiting..."
   exit 0;
 fi
