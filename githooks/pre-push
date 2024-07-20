@@ -7,6 +7,10 @@ fi
 
 # Extract the repository name from the repository path
 REPO_NAME=$(basename $REPOS_PATH)
+if [ "$REPO_NAME" == "readme2notion"]; then
+  echo "Not needed to run the hook. Exiting..."
+  exit 0;
+fi
 
 # Construct the log file path
 LOG_FILE="/tmp/${HOSTNAME}_${REPO_NAME}.log"
