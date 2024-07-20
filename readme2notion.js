@@ -19,7 +19,7 @@ program
   .name('readme2notion')
   .usage('[options] <input-file>')
   .arguments('<input-file>')
-  .option('-c, --config <file_path_to_config_file>', 'JSON Config file path', '/repos/.notionrc')
+  .option('-c, --config <file_path_to_config_file>', 'JSON Config file path', '/repos/.notion.json')
   .option('-t, --commit <commit_hash>', 'The latest GIT commit hash', 'null')
   .option('-n, --notion-token <token>', 'Notion API token')
 
