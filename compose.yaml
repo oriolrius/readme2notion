@@ -1,0 +1,5 @@
+name: readme2notion
+services:
+  readme2Notion:
+    build: .
+    image: readme2notion
