@@ -7,12 +7,50 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+# Getting the CHCR_PAT (Github Container Registry Personal Access Token) from the UCI
+echo "$(date): Getting the GHCR_PAT from the UCI" | tee -a $LOG_FILE
+if [ -z "$GHCR_PAT" ]; then
+  GHCR_PAT=$(uci get credentials.ghcr.ghcr_pat 2>/dev/null)
+  if [ -z "$GHCR_PAT" ]; then
+    echo "$(date): GHCR_PAT is not set" | tee -a $LOG_FILE
+    exit 1
+  fi
+fi
+
 # Extract the repository name from the repository path
 REPO_NAME=$(basename $REPOS_PATH)
 echo "Repository name is $REPO_NAME"
 if [ ${REPO_NAME} = "readme2notion" ]; then
-  echo "Not needed to run the hook. Keeping with the push..."
-  exit 0;
+  echo "Updating GIST..."
+  # https://gist.githubusercontent.com/oriolrius/963795c149e11c084db763a578abc258/raw/iot-gw_stacks_pre-push
+  GIST_ID="963795c149e11c084db763a578abc258"
+
+  # Read the content of the file
+  FILE_CONTENT=$(cat "$0")
+  GIST_DESCRIPTION="readm2notion pre-push hook"
+  FILE_NAME="iot-gw_stacks_pre-push"
+
+  # Create the JSON payload
+  echo "Creating JSON payload from current pre-push file..."
+  json_payload=$(jq -n --arg description "$GIST_DESCRIPTION" --arg file_name "$FILE_NAME" --arg content "$FILE_CONTENT" '{
+  description: $description,
+  files: {
+    ($file_name): {
+      content: $content
+    }
+  }
+  }')
+
+  # Update the gist
+  echo "Updating the gist..."
+  response=$(curl -s -X PATCH \
+    -H "Authorization: token $GHCR_PAT" \
+    -H "Content-Type: application/json" \
+    -d "$json_payload" \
+    "https://api.github.com/gists/$GIST_ID")
+
+  echo "Gist updated successfully"
+  exit 0
 fi
 
 # Construct the log file path
@@ -39,16 +77,6 @@ echo "$(date): Latest commit hash to be pushed is $LATEST_COMMIT" | tee -a $LOG_
 # echo "Set:" >> $LOG_FILE
 # set >> $LOG_FILE
 # echo "---" >> $LOG_FILE
-
-# Getting the CHCR_PAT (Github Container Registry Personal Access Token) from the UCI
-echo "$(date): Getting the GHCR_PAT from the UCI" | tee -a $LOG_FILE
-if [ -z "$GHCR_PAT" ]; then
-  GHCR_PAT=$(uci get credentials.ghcr.ghcr_pat 2>/dev/null)
-  if [ -z "$GHCR_PAT" ]; then
-    echo "$(date): GHCR_PAT is not set" | tee -a $LOG_FILE
-    exit 1
-  fi
-fi
 
 # Github Container Registry login
 echo "$(date): Logging into GitHub Container Registry" | tee -a $LOG_FILE
