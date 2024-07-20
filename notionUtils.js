@@ -114,6 +114,22 @@ export const createPage = async (notion, databaseId, title, hostname, commit_has
   }
 };
 
+export const updatePageProperties = async (notion, pageId, properties) => {
+  try {
+    console.log(`Updating properties of the page with ID: ${pageId}`);
+
+    const response = await notion.pages.update({
+      page_id: pageId,
+      properties,
+    });
+
+    console.log(`Successfully updated properties of the page with ID: ${pageId}`);
+    // console.log(response);
+  } catch (error) {
+    console.error(`Error updating properties of the page: ${error.message}`);
+  }
+}
+
 export const findPageId = async (notion, databaseId, title) => {
   console.log(`Finding page ID in database ID: ${databaseId}`);
 

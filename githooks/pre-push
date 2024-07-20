@@ -24,15 +24,15 @@ LATEST_COMMIT=$(git rev-parse HEAD)
 echo "$(date): Latest commit hash to be pushed is $LATEST_COMMIT" | tee -a $LOG_FILE
 
 # Capture parameters and environment variables to the log file
+echo "---" >> $LOG_FILE
+echo "Parameters: $@" >> $LOG_FILE
 echo "---" | tee -a $LOG_FILE
-echo "Parameters: $@" | tee -a $LOG_FILE
-echo "---" | tee -a $LOG_FILE
-echo "Environment:" | tee -a $LOG_FILE
-env | tee -a $LOG_FILE
-echo "---" | tee -a $LOG_FILE
-echo "Set:" | tee -a $LOG_FILE
-set | tee -a $LOG_FILE
-echo "---" | tee -a $LOG_FILE
+echo "Environment:" >> $LOG_FILE
+env >> $LOG_FILE
+echo "---" >> $LOG_FILE
+echo "Set:" >> $LOG_FILE
+set >> $LOG_FILE
+echo >> -a $LOG_FILE
 
 # Get the path of the current repository
 REPOS_PATH=$(git rev-parse --show-toplevel)

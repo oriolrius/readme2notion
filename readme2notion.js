@@ -7,7 +7,7 @@ import { Client } from '@notionhq/client';
 import { program } from 'commander';
 import rc from 'rc';
 import { create } from 'node:domain';
-import { createPage, findPageId, getReadmeBlocks, deletePageContent, addChildrenBlocks, createNotionClient } from './notionUtils.js';
+import { createPage, findPageId, getReadmeBlocks, deletePageContent, addChildrenBlocks, createNotionClient, updatePageProperties } from './notionUtils.js';
 import os from 'os'; 
 import { exit } from 'node:process';
 
@@ -57,6 +57,28 @@ program
         if (!page_id) {
           page_id = await createPage(notion, config.db_id, page_name, hostname, options.commit);
         } else {
+          await updatePageProperties(notion, page_id, {
+            Hostname: {
+              rich_text: [
+                {
+                  type: "text",
+                  text: {
+                    content: hostname
+                  }
+                }
+              ]
+            },
+            GitCommit: {
+              rich_text: [
+                {
+                  type: "text",
+                  text: {
+                    content: options.commit
+                  }
+                }
+              ]
+            }
+          });
           await deletePageContent(notion, page_id);
         }
         await addChildrenBlocks(notion, page_id, blocks);
