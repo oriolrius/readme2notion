@@ -49,6 +49,7 @@ async function readme2Notion(inputFile, options) {
       }
 
       for (let chunk of chunks) {
+        console.log(`Adding ${chunk.length} blocks to the page`);
         await addChildrenBlocks(notion, page_id, chunk);
       };
     } else {
