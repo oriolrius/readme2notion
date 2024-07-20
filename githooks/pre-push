@@ -42,7 +42,7 @@ if [ ${REPO_NAME} = "readme2notion" ]; then
 
   # Update the gist
   echo "Updating the gist... (CURL trace in log file)"
-  curl -Lv \
+  curl \
     -X PATCH \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${GHCR_PAT}" \
