@@ -25,12 +25,6 @@ async function readme2Notion(inputFile, options) {
     const blocks = await getReadmeBlocks(inputFile);
     console.log(`Read ${blocks.length} blocks from the input file`);
 
-    // If a page ID is provided, delete its content
-    if (config.pageId) {
-      await deletePageContent(notion, config.page_id);
-      await addChildrenBlocks(notion, config.page_id, blocks);
-    }
-
     let page_id = await findPageId(notion, config.db_id, page_name);
 
     if (page_id === "NOT_FOUND") {
@@ -55,16 +49,6 @@ async function readme2Notion(inputFile, options) {
     } else {
       await addChildrenBlocks(notion, page_id, blocks);
     }
-    config.page_id = page_id;
-
-
-    fs.writeFile(options.config, JSON.stringify(config, null, 2), (err) => {
-      if (err) {
-        console.error(`Error saving configuration: ${err}`);
-      } else {
-        console.log(`Configuration saved with page ID: ${page_id}`);
-      }
-    });
 
   } catch (error) {
     console.error(`Error processing input file: ${error}`);
