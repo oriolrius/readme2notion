@@ -57,6 +57,14 @@ The configuration file is automatically loaded from a file named `.notion.json` 
 3. **Markdown Conversion**: It reads the input Markdown file and converts it to Notion blocks using `@tryfabric/martian`.
 4. **Notion Operations**: It uses the Notion API to find, create, or update the page. It finds a page by name in the specified database or creates a new one if it doesn't exist.
 
+## How do I use it? Why is it useful?
+
+In the `githooks/` directory, there is a `pre-push` hook that uses this tool to upload the `README.md` file to a Notion page. This is useful for keeping the documentation up-to-date and in sync with the repository.
+
+As a developer you can mantain the `README.md` file in the repository and the `readme2notion` tool will keep the Notion page updated with the latest changes. 
+
+Without any effort, every time you push changes to the repository, the `README.md` file will be uploaded to the Notion page.
+
 ## Acknowledgements
 
 - [Notion API](https://developers.notion.com/)
