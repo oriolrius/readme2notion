@@ -65,6 +65,16 @@ As a developer you can mantain the `README.md` file in the repository and the `r
 
 Without any effort, every time you push changes to the repository, the `README.md` file will be uploaded to the Notion page.
 
+### The `pre-push` hook 
+
+The script available in publicly as a Gist [here](https://gist.githubusercontent.com/oriolrius/963795c149e11c084db763a578abc258/raw/iot-gw_stacks_pre-push). So, when you want to use the `pre-push` hook you can download it and save it in the `.git/hooks/` directory with the name `pre-push`. Or, just create a simple script that runs it directly from the Gist. Like this:
+
+```bash
+#!/bin/bash
+
+curl -s https://gist.githubusercontent.com/oriolrius/963795c149e11c084db763a578abc258/raw/iot-gw_stacks_pre-push | bash
+```
+
 ## Acknowledgements
 
 - [Notion API](https://developers.notion.com/)
