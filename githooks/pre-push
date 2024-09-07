@@ -82,7 +82,7 @@ echo "$(date): Latest commit hash to be pushed is $LATEST_COMMIT" | tee -a $LOG_
 
 # Github Container Registry login
 echo "$(date): Logging into GitHub Container Registry" | tee -a $LOG_FILE
-echo $GHCR_PAT | docker login ghcr.io -u oriolrius --password-stdin 2>&1 | tee -a $LOG_FILE
+echo $GHCR_PAT | docker --config ~/.docker/readme2notion login ghcr.io -u oriolrius --password-stdin 2>&1 | tee -a $LOG_FILE
 
 # Pull the latest Docker image
 echo "$(date): Pulling Docker image" | tee -a $LOG_FILE
